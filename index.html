@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel=”icon” type= “image/x-icon” href="/media/plane.png"/>
+    <title>Cloud 9 Travel App</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src='node_modules/mustache/mustache.min.js'></script>
+    <script src='index.js' type="module"></script>
+
+    <!-- HOMEPAGE TEMPLATE -->
+    <script type="text/template" id="template-page-home">
+        <div class = "page page-home">
+            <header class = "page-header">
+                <img src = '/media/plane.svg' class = 'logo'>
+                <nav id="hamburger-nav"></nav>
+            </header>
+            
+            <main class = "page-content">
+                <div id = 'opacity-container'></div>
+                <div id="home-title">
+                    <h1> {{intro}} </h1>
+                    <h3> {{secondaryContent}} </h3>
+                    <h2> {{thirdContent}} </h2>
+                    <a class="button" id = 'existing-user-btn' href = '#signIn'>
+                        Sign In
+                    </a>
+                    <a class="button" id = 'new-user-btn' href = '#signUp'>
+                        Create Account
+                    </a>
+                </div>
+
+              
+                
+            </main>
+            <div class="clouds">
+                <img src="/media/cloud1.png" alt="clouds" style = "--i:1;">
+                <img src="/media/cloud2.png" alt="clouds" style = "--i:2;">
+                <img src="/media/cloud3.png" alt="clouds" style = "--i:3;">
+                <img src="/media/cloud4.png" alt="clouds" style = "--i:4;">
+                <img src="/media/cloud5.png" alt="clouds" style = "--i:5;">
+            </div>
+        </div>
+    </script>
+
+    <!-- HOTELS PAGE TEMPLATE -->
+    <script type="text/template" id="template-page-hotels">
+        <div class="page page-hotels">
+            <header class="page-header">
+                <img src = '/media/plane.svg' class = 'logo'>
+                <nav id="main-nav"></nav>
+                <nav id="nav-icons">
+                    <div id="icon-btn-favourites">
+                        <a href='#favourites'><img src="/media/heart.svg" alt="favourites"></a>
+                    </div>
+                    <div id="icon-btn-profile">
+                        <a href='#userProfile'><img src="/media/user-icon.svg" alt="user"></a>
+                    </div>
+                </nav>
+                <nav id="hamburger-nav"></nav>
+            </header>
+            <main class="page-content">
+                <div id = 'opacity-container'></div>
+                <div id="hotels-title">
+                    <h1>My Hotels Collection</h1>
+                    <div id="filters-container">
+                        <div id = "hotels-list-filters"> Filters: &nbsp </div>
+                        <button id = "add-hotel-btn"> <p> Add New Hotel </p><i class="fas fa-plus"></i> </button> 
+                    </div>
+                </div>
+                <div id = "hotels-list"></div>    
+            </main>
+        </div>    
+    </script>
+
+    <!-- TOP PICKS PAGE TEMPLATE -->
+    <script type="text/template" id="template-page-top-picks">
+        <div class="page page-top-picks">
+            <header class="page-header">
+                <img src = '/media/plane.svg' class = 'logo'>
+                <nav id="main-nav"></nav>
+                <nav id="nav-icons">
+                    <div id="icon-btn-favourites">
+                        <a href='#favourites'><img src="/media/heart.svg" alt="favourites"></a>
+                    </div>
+                    <div id="icon-btn-profile">
+                        <a href='#userProfile'><img src="/media/user-icon.svg" alt="user"></a>
+                    </div>
+                </nav>
+                <nav id="hamburger-nav"></nav>
+            </header>
+            <div id = 'opacity-container'></div>
+            <main class="page-content">
+                <div id="hotels-title">
+                    <h1> Our Top Picks </h1>
+                    <p>{{intro}}</p>
+                </div>
+                <div id = "top-picks-list"></div>
+            </main>
+        </div>    
+    </script>
+
+    <!-- FAVOURITES PAGE TEMPLATE -->
+    <script type="text/template" id="template-page-favourites">
+        <div class="page page-favourites">
+            <header class="page-header">
+                <img src = '/media/plane.svg' class = 'logo'>
+                <nav id="main-nav"></nav>
+                <nav id="nav-icons">
+                    <div id="icon-btn-favourites">
+                        <a href='#favourites'><img src="/media/heart.svg" alt="favourites"></a>
+                    </div>
+                    <div id="icon-btn-profile">
+                        <a href='#userProfile'><img src="/media/user-icon.svg" alt="user"></a>
+                    </div>
+                </nav>
+                <nav id="hamburger-nav"></nav>
+            </header>
+            <div id = 'opacity-container'></div>
+            <main class="page-content">
+                <div id="favourites-title">
+                    <h1>Favourites</h1>
+                </div>
+                <div id = "favourites-list"></div>     
+            </main>
+        </div>    
+    </script>
+
+    <!-- 404 PAGE TEMPLATE -->
+    <script type="text/template" id="template-page-404">
+        <div class="page page-home">
+            <header class="page-header">
+                <nav id="main-nav"></nav>
+                <nav id="hamburger-nav"></nav>
+            </header>
+            <main class="page-content">
+                <h1> 404 page/file not found! </h1>
+                <p> Sorry about this. </p>   
+            </main>
+        </div>    
+    </script>
+
+    <!-- ADD HOTEL PAGE TEMPLATE -->
+    <script type="text/template" id="template-page-add-hotel">
+        <div class="page page-add-hotel">
+            <header class="page-header">
+                <img src = '/media/plane.svg' class = 'logo'>
+                <nav id="main-nav"></nav>
+                <nav id="nav-icons">
+                    <div id="icon-btn-favourites">
+                        <a href='#favourites'><img src="/media/heart.svg" alt="favourites"></a>
+                    </div>
+                    <div id="icon-btn-profile">
+                        <a href='#userProfile'><img src="/media/user-icon.svg" alt="user"></a>
+                    </div>
+                </nav>
+                <nav id="hamburger-nav"></nav>
+            </header>
+            <div id = 'opacity-container'></div>
+            <main class="page-content" id = 'add-hotel-content'>
+                <button class="add-hotel-back-btn">Back</button>
+                <h1> Add a Hotel </h1>
+                <p> Add a hotel to your collection! </p>
+                <form action = "" method = "post" id = "form-add-hotel" class= "inline-form">
+                    <div class="field">
+                        <input type = "text" class = "input" name = "title" placeholder = "Hotel Name *">
+                    </div> 
+                    <div class="field">
+                        <input type = "text" class = "input" name = "location" placeholder = "Location (eg. Perth Australia) *">
+                    </div>
+                    <div class="field">
+                        <input type = "number" class = "input" name = "price" placeholder = "Price Per Night (eg. 150) *">
+                    </div>
+                    <div class="field">
+                        <input type = "text" class = "input" name = "cover_img" placeholder = "Cover Image URL">
+                    </div>
+                    <div class="field">
+                        <input type = "text" class = "input" name = "description" placeholder = "Description">
+                    </div>
+                    <p> Please fill in all required fields* </p>
+
+                    <div class="field">
+                        <input type = "submit" value="Add Hotel" class= 'button' id = "add-hotel-confirm-btn">
+                    </div> 
+                </form>    
+            </main>
+        </div>    
+    </script>
+
+    <!-- USER PROFILE PAGE TEMPLATE -->
+    <script type="text/template" id="template-page-user-profile">
+        <div class="page page-user-profile">
+            <header class="page-header">
+                <img src = '/media/plane.svg' class = 'logo'>
+                <nav id="main-nav"></nav>
+                <nav id="nav-icons">
+                    <div id="icon-btn-favourites">
+                        <a href='#favourites'><img src="/media/heart.svg" alt="favourites"></a>
+                    </div>
+                    <div id="icon-btn-profile">
+                        <a href='#userProfile'><img src="/media/user-icon.svg" alt="user"></a>
+                    </div>
+                </nav>
+                <nav id="hamburger-nav"></nav>
+            </header>
+            <div id = 'opacity-container'></div>
+            <main class="page-content">
+                <div id = user-profile-content>
+                    <img src = "media/user.svg" id = "displayPicture">
+                    <h1> {{ firstName }} {{ lastName }} </h1>
+                    <h2> {{ email }} </h2>
+                    <div class="user-options">
+                        <div id = "sign-out-button-div">
+                            <button class = "button sign-out-btn">Sign out<i class="fas fa-sign-out-alt fa-2x"></i></button>
+                        </div>
+                    </div>
+                </div> 
+                <div id = "delete-button-div">
+                    <button class = "button delete-user-btn">Delete Account<i class="fas fa-trash-alt fa-2x"></i></button>
+                </div>  
+            </main>
+        </div>    
+    </script>
+
+    <!-- SIGN UP PAGE TEMPLATE -->
+    <script type="text/template" id="template-page-sign-up">
+        <div class="page page-sign-up">
+            <header class="page-header">
+                <img src = '/media/plane.svg' class = 'logo'>
+                <div id = "page-logo"></div>
+                <nav id="main-nav"></nav>
+                <nav id="hamburger-nav"></nav>
+            </header>
+            <div id = 'opacity-container'></div>
+            <main class="page-content" id = 'sign-up-content'>
+                <div class="sign-up-title">
+                    <h1> Your journey begins here. </h1>
+                </div>
+                <form action = "" method = "post" id = "form-sign-up" class= "inline-form">
+                    <div class="form-sign-up-fields">
+                        <div class="form-sign-up-left">
+                            <div class="field">
+                                <input type = "text" class = "input" name = "first_name" placeholder = "First Name *">
+                            </div> 
+                            <div class="field">
+                                <input type = "email" class = "input" name = "email" placeholder = "Email *">
+                            </div>
+                            <div class="field">
+                                <input type = "text" class = "input" name = "dob" placeholder = "Date of Birth (dd/mm/yyyy) *">
+                            </div>
+                        </div>
+                        
+                        <div class="form-sign-up-right">
+                            <div class="field">
+                                <input type = "text" class = "input" name = "last_name" placeholder = "Last Name *">
+                            </div>
+                            <div class="field">
+                                <input type = "password" class = "input" name = "password" placeholder = "Password *">
+                            </div>
+                            <div class="field">
+                                <input type = "text" class = "input" name = "fav_destination" placeholder = "Favourite Destination">
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="form-sign-up-submit">
+                        <p> Please fill in all required fields* </p>
+                    <div class="field">
+                        <input type = "submit" value="Create Account" class = "button" id = 'sign-up-btn'>
+                    </div> 
+                    </div>
+                    
+                </form>    
+            </main>
+            <div class="clouds">
+                <img src="/media/cloud1.png" alt="clouds" style = "--i:1;">
+                <img src="/media/cloud2.png" alt="clouds" style = "--i:2;">
+                <img src="/media/cloud3.png" alt="clouds" style = "--i:3;">
+                <img src="/media/cloud4.png" alt="clouds" style = "--i:4;">
+                <img src="/media/cloud5.png" alt="clouds" style = "--i:5;">
+            </div>
+        </div>    
+    </script>
+
+    <!-- SIGN IN PAGE TEMPLATE -->
+    <script type="text/template" id="template-page-sign-in">
+        <div class="page page-sign-in">
+            <header class="page-header">
+                <img src = '/media/plane.svg' class = 'logo'>
+                <div id = "page-logo"></div>
+                <nav id="main-nav"></nav>
+                <nav id="hamburger-nav"></nav>
+            </header>
+            <div id = 'opacity-container'></div>
+            <main class="page-content" id = 'sign-in-content'>
+                <div id="sign-in-title">
+                    <h1> Welcome back! </h1>
+                    <h2> You look like you need a holiday . . . </h2>
+                </div>
+                
+                    <form action = "" method = "post" id = "form-sign-in" class= "inline-form">
+                        <div class="field">
+                            <input type = "email" class = "input" name = "email" placeholder = "Email">
+                        </div>
+                        <div class="field">
+                            <input type = "password" class = "input" name = "password" placeholder = "Password">
+                        </div>
+                        <p> Don't have an account? Create one for FREE. </p> 
+                        <p> No money needed, we promise. </p> 
+                        <div class="field">
+                            <input type = "submit" value="Sign In" class = "button" id = 'sign-in-btn'>
+                        </div>  
+                    </form> 
+            </main>
+            <div class="clouds">
+                <img src="/media/cloud1.png" alt="clouds" style = "--i:1;">
+                <img src="/media/cloud2.png" alt="clouds" style = "--i:2;">
+                <img src="/media/cloud3.png" alt="clouds" style = "--i:3;">
+                <img src="/media/cloud4.png" alt="clouds" style = "--i:4;">
+                <img src="/media/cloud5.png" alt="clouds" style = "--i:5;">
+            </div>
+        </div>    
+    </script>
+
+    <!-- HOTEL ENTRY TEMPLATE -->
+    <script type="text/template" id="template-hotel-entry">
+        <span class = "fav-icon">
+            <i class="fas fa-heart"></i>
+        </span>
+        <div class = "content">
+            <div class="hotel-title-container">
+                <h3 class = "title"> {{ title }} </h3>
+                <div class = "location"> {{ location }} </div>
+            </div>
+            <div class="hotel-content-container">
+                <div class="hotel-image-container">
+                    <img src = "{{ cover_img }}" alt = "Hotel Image" class = "hotel-image">
+                </div>
+                <div class="hotel-buttons-container">
+                    <button class = "button edit-hotel-btn"> <i class="fas fa-pencil-alt"></i></button>
+                    <button class = "button view-hotel-btn"> View </button>
+                    <button class = "button delete-hotel-btn"> <i class="fas fa-trash-alt"></i> </button>
+                </div>
+            </div>
+            
+        </div>
+    </script>
+
+    <!-- TOP PICK ENTRY TEMPLATE -->
+    <script type="text/template" id="template-top-pick-entry">
+        <span class = "fav-icon">
+            <i class="fas fa-heart"></i>
+        </span>
+        <div class = "content">
+            <div class="top-pick-title-container">
+                <h3 class = "title"> {{ title }} </h3>
+                <div class = "location"> {{ location }} </div>
+            </div>
+            <div class="top-pick-content-container"> 
+                <div class="top-pick-image-container">
+                    <img src = "{{ cover_img }}" alt = "Hotel Image" class = "hotel-image">
+                </div>
+                <div class="top-pick-buttons-container">
+                    <button class = "button view-hotel-btn"> View </button>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- HOTEL MODAL TEMPLATE -->
+    <script type="text/template" id="template-hotel-modal">
+        <div class = "hotel-modal">
+            <div class = "modal-content">
+                <h2 class = "title"> {{ title }} </h2>
+                <div class = "location"> {{ location }} </div>
+                <div class = "description"> {{ description }} </div>
+                <div class = "price"> AUD $ {{ price }} per night </div>
+                <button class = "button fav-btn"> Add to Favourites &nbsp <i class="fas fa-heart"></i></button>
+            </div>
+            <div class="modal-image">
+                <img src = "{{ cover_img }}" alt = "Hotel Image" class = "hotel-image">
+            </div>
+        </div>
+    </script>
+
+    <!-- TOP PICK MODAL TEMPLATE -->
+    <script type="text/template" id="template-top-pick-modal">
+        <div class = "top-pick-modal">
+            <div class = "modal-content">
+                <h2 class = "preview-text"> TOP PICK PREVIEW </h2>
+                <h2 class = "title"> {{ title }} </h2>
+                <div class = "location"> {{ location }} </div>
+                <div class = "description"> {{ description }} </div>
+                <div class = "price"> AUD $ {{ price }} per night </div>
+            </div>
+            <div class="modal-image">
+                <img src = "{{ cover_img }}" alt = "Hotel Image" class = "hotel-image">
+            </div>
+        </div>
+
+        <script src="https://kit.fontawesome.com/0e24537e5f.js" crossorigin="anonymous"></script>
+    </script>
+</body>
+
+</html>
